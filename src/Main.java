@@ -23,7 +23,6 @@ public class Main {
         System.out.println("Сортировка пузырьком: " + Arrays.toString(arr));
         System.out.println("Время: " + (endTimePrimitives - startTimePrimitives) + " ms");
 
-        // Сортировка Collections.sort()
         long startTimeCollections = System.currentTimeMillis();
         Collections.sort(list);
         long endTimeCollections = System.currentTimeMillis();
