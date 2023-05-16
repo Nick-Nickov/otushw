@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Средний возраст студентов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #studentForm {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 60%;
+            margin: auto;
+        }
+        #studentForm input, #studentForm select {
+            width: 100%;
+            margin: 5px 0;
+        }
+        table {
+            width: 60%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<form id="studentForm">
+    <input type="text" id="name" placeholder="Имя студента" required>
+    <input type="date" id="dob" required>
+
+    <select id="gender" required>
+        <option value="" selected disabled>Выберите пол</option>
+        <option value="Мужчина">Мужчина</option>
+        <option value="Женщина">Женщина</option>
+    </select>
+
+    <input type="submit" value="Добавить">
+</form>
+
+<table id="studentTable">
+    <tr>
+        <th>Имя студента</th>
+        <th>Пол</th>
+        <th>Дата рождения</th>
+        <th>Возраст</th>
+    </tr>
+</table>
+
+<script>
+    document.getElementById('studentForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var name = document.getElementById('name').value;
+        var dob = document.getElementById('dob').value;
+        var gender = document.getElementById('gender').value;
+
+        var dobDate = new Date(dob);
+        var currentDate = new Date();
+        var age = currentDate.getFullYear() - dobDate.getFullYear();
+        var m = currentDate.getMonth() - dobDate.getMonth();
+        if (m < 0 || (m === 0 && currentDate.getDate() < dobDate.getDate())) {
+            age--;
+        }
+
+        var table = document.getElementById('studentTable');
+        var row = table.insertRow(-1);
+        row.insertCell(0).innerHTML = name;
+        row.insertCell(1).innerHTML = gender;
+        row.insertCell(2).innerHTML = dob;
+        row.insertCell(3).innerHTML = age;
+
+        var totalAge = 0;
+        var rows = table.rows;
+        for(var i = 1; i < rows.length; i++) {
+            totalAge += Number(rows[i].cells[3].innerHTML);
+        }
+
+        var avgRow = document.getElementById('averageRow');
+        if (avgRow) {
+            avgRow.remove();
+        }
+        avgRow = table.insertRow(-1);
+        avgRow.insertCell(0).innerHTML = "Средний возраст студентов: ";
+        avgRow.insertCell(1).innerHTML = "";
+        avgRow.insertCell(2).innerHTML = "";
+        avgRow.insertCell(3).innerHTML = (totalAge / (rows.length - 2)).toFixed(2);
+        avgRow.id = "averageRow";
+    });
+</script>
+</body>
+</html>
